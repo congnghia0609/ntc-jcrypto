@@ -55,10 +55,10 @@ public class MainApp {
             System.out.println("subset3: " + subset3);
             System.out.println("Secret recovered from minimum subset3 of shares: " + ss.recoverSecret(subset3));
             
-            System.out.println("");
-            List<SPoint> subset4 = ss.getPoints().subList(0, 2);
-            System.out.println("subset4: " + subset4);
-            System.out.println("Secret recovered from minimum subset4 of shares: " + ss.recoverSecret(subset4));
+//            System.out.println("");
+//            List<SPoint> subset4 = ss.getPoints().subList(0, 2);
+//            System.out.println("subset4: " + subset4);
+//            System.out.println("Secret recovered from minimum subset4 of shares: " + ss.recoverSecret(subset4));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 public class SecretShare {
     private static final Logger log = LoggerFactory.getLogger(SecretShare.class);
     // https://en.wikipedia.org/wiki/Mersenne_prime
+    // https://vi.wikipedia.org/wiki/S%E1%BB%91_nguy%C3%AAn_t%E1%BB%91_Mersenne
     // 12th Mersenne Prime is 2^127 - 1
     // (for this application we want a known prime number as close as
     // possible to our security level; e.g.  desired security level of 128
