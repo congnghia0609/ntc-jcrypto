@@ -41,7 +41,8 @@ public class SecretShare {
     // possible to our security level; e.g.  desired security level of 128
     // bits -- too large and all the ciphertext is large; too small and security is compromised)
     // 13th Mersenne Prime is 2^521 - 1
-    public static final BigInteger PRIME = new BigInteger("2").pow(127).subtract(BigInteger.ONE); // 2^127 - 1
+    public static final int NBIT = 127;
+    public static final BigInteger PRIME = new BigInteger("2").pow(NBIT).subtract(BigInteger.ONE); // 2^127 - 1
     private Random rand = new SecureRandom();
     
     private int minimum;
@@ -84,7 +85,7 @@ public class SecretShare {
     }
     
     private BigInteger randNBit() {
-        return new BigInteger(127, rand); // range(0, 2^127 - 1)
+        return new BigInteger(NBIT, rand); // range(0, 2^127 - 1)
     }
     
     // Compute the polynomial value using Horner's method.
