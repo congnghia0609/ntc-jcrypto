@@ -16,6 +16,10 @@
 
 package com.ntc.app;
 
+import com.ntc.jcrypto.sss.SPoint;
+import com.ntc.jcrypto.sss.SecretShare;
+import java.util.List;
+
 /**
  *
  * @author nghiatc
@@ -27,7 +31,37 @@ public class MainApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            SecretShare ss = new SecretShare(3, 6);
+            System.out.println("Secret: " + ss.getPoly());
+            System.out.println("Shares: ");
+            List<SPoint> listPoints = ss.getPoints();
+            for (SPoint sp : listPoints) {
+                System.out.println(sp);
+            }
+            
+            System.out.println("");
+            List<SPoint> subset1 = ss.getPoints().subList(0, 3);
+            System.out.println("subset1: " + subset1);
+            System.out.println("Secret recovered from minimum subset1 of shares: " + ss.recoverSecret(subset1));
+            
+            System.out.println("");
+            List<SPoint> subset2 = ss.getPoints().subList(3, 6);
+            System.out.println("subset2: " + subset2);
+            System.out.println("Secret recovered from minimum subset2 of shares: " + ss.recoverSecret(subset2));
+            
+            System.out.println("");
+            List<SPoint> subset3 = ss.getPoints().subList(1, 5);
+            System.out.println("subset3: " + subset3);
+            System.out.println("Secret recovered from minimum subset3 of shares: " + ss.recoverSecret(subset3));
+            
+            System.out.println("");
+            List<SPoint> subset4 = ss.getPoints().subList(0, 2);
+            System.out.println("subset4: " + subset4);
+            System.out.println("Secret recovered from minimum subset4 of shares: " + ss.recoverSecret(subset4));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
