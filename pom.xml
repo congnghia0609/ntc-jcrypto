@@ -6,6 +6,9 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>ntc-jcrypto</name>
+    <description>ntc-jcrypto is module java cryptography</description>
+    <url>https://github.com/congnghia0609/ntc-jcrypto</url>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
