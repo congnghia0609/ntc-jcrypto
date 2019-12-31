@@ -29,10 +29,17 @@ import org.slf4j.LoggerFactory;
  * @author nghiatc
  * @since Dec 31, 2019
  * 
+ * Shamir's Secret Sharing Algorithm
  * https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing
  */
 public class SecretShare {
     private static final Logger log = LoggerFactory.getLogger(SecretShare.class);
+    // https://en.wikipedia.org/wiki/Mersenne_prime
+    // 12th Mersenne Prime is 2^127 - 1
+    // (for this application we want a known prime number as close as
+    // possible to our security level; e.g.  desired security level of 128
+    // bits -- too large and all the ciphertext is large; too small and security is compromised)
+    // 13th Mersenne Prime is 2^521 - 1
     public static final BigInteger PRIME = new BigInteger("2").pow(127).subtract(BigInteger.ONE); // 2^127 - 1
     private Random rand = new SecureRandom();
     
@@ -79,11 +86,14 @@ public class SecretShare {
         return new BigInteger(127, rand); // range(0, 2^127 - 1)
     }
     
+    // Compute the polynomial value using Horner's method.
+    // https://en.wikipedia.org/wiki/Horner%27s_method
     private BigInteger evalAt(List<BigInteger> poly, BigInteger x) {
         BigInteger accum = BigInteger.ZERO;
         if (poly != null && !poly.isEmpty()) {
             int size = poly.size();
-            for (int i=size-1; i>=0; --i) {
+            accum = poly.get(size-1);
+            for (int i=size-2; i>=0; --i) {
                 //Horner's method: y = (ax + b)x + c
                 accum = accum.multiply(x).add(poly.get(i)).mod(PRIME);
             }
@@ -92,6 +102,7 @@ public class SecretShare {
         return accum;
     }
     
+    // Recover the secret from share points
     public BigInteger recoverSecret(List<SPoint> listshares) throws Exception {
         if (listshares == null || listshares.isEmpty()) {
             throw new Exception("listshares is empty");
@@ -102,8 +113,8 @@ public class SecretShare {
         return lagrangeInterpolate(listshares);
     }
     
-    // Recover the secret from share points
     // calculate f(0) of the given points using Lagrangian interpolation
+    // https://en.wikipedia.org/wiki/Lagrange_polynomial
     private BigInteger lagrangeInterpolate(List<SPoint> listshares) throws Exception {
         BigInteger y = BigInteger.ZERO;
         BigInteger x = BigInteger.ZERO;
@@ -113,15 +124,16 @@ public class SecretShare {
             BigInteger li = BigInteger.ONE;
             for (int j=0; j<listshares.size(); j++) {
                 if (i!=j) {
-                    // li = li + (x-bX)/(aX-bX)
+                    // li = li * [(x-bX)/(aX-bX)...]
                     BigInteger bX = listshares.get(j).getX();
                     BigInteger tu = x.subtract(bX);
                     BigInteger mau = aX.subtract(bX).modInverse(PRIME);
                     li = li.multiply(tu).multiply(mau).mod(PRIME);
                 }
             }
+            // y = y + aY * [(x-bX)/(aX-bX)...]
             y = y.add(li.multiply(aY)).mod(PRIME);
         }
         return y;
-    } 
+    }
 }
