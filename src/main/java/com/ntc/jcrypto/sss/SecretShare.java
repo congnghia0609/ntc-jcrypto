@@ -93,9 +93,9 @@ public class SecretShare {
     private BigInteger evalAt(List<BigInteger> poly, BigInteger x) {
         BigInteger accum = BigInteger.ZERO;
         if (poly != null && !poly.isEmpty()) {
-            int size = poly.size();
-            accum = poly.get(size-1);
-            for (int i=size-2; i>=0; --i) {
+            int last = poly.size() - 1;
+            accum = poly.get(last);
+            for (int i=last-1; i>=0; --i) {
                 //Horner's method: y = (ax + b)x + c
                 accum = accum.multiply(x).add(poly.get(i)).mod(PRIME);
             }

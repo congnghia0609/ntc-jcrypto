@@ -18,6 +18,7 @@ package com.ntc.app;
 
 import com.ntc.jcrypto.sss.SPoint;
 import com.ntc.jcrypto.sss.SecretShare;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -31,6 +32,30 @@ public class MainApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        try {
+            BigInteger prime = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
+            System.out.println("prime=" + prime.toString(2));
+            System.out.println("prime.bitLength=" + prime.bitLength()); // 256
+            System.out.println("prime.bitCount=" + prime.bitCount()); // 251
+            System.out.println("prime.isProbablePrime[10000]=" + prime.isProbablePrime(10000));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void test2(String[] args) {
+        try {
+            BigInteger prime = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
+            System.out.println("prime=" + prime.toString(2));
+            System.out.println("prime.bitLength=" + prime.bitLength()); // 256
+            System.out.println("prime.bitCount=" + prime.bitCount()); // 251
+            System.out.println("prime.isProbablePrime[10000]=" + prime.isProbablePrime(10000));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void test1(String[] args) {
         try {
             SecretShare ss = new SecretShare(3, 6);
             System.out.println("Secret: " + ss.getPoly());
