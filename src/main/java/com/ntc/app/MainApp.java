@@ -33,17 +33,14 @@ public class MainApp {
      */
     public static void main(String[] args) {
         try {
-            BigInteger prime = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
-            System.out.println("prime=" + prime.toString(2));
-            System.out.println("prime.bitLength=" + prime.bitLength()); // 256
-            System.out.println("prime.bitCount=" + prime.bitCount()); // 251
-            System.out.println("prime.isProbablePrime[10000]=" + prime.isProbablePrime(10000));
+            // test1
+            test1();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public static void test2(String[] args) {
+    public static void test2() {
         try {
             BigInteger prime = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
             System.out.println("prime=" + prime.toString(2));
@@ -58,7 +55,7 @@ public class MainApp {
         }
     }
     
-    public static void test1(String[] args) {
+    public static void test1() {
         try {
             SecretShare ss = new SecretShare(3, 6);
             System.out.println("Secret: " + ss.getPoly());
