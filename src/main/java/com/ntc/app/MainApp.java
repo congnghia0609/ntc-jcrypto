@@ -47,9 +47,12 @@ public class MainApp {
         try {
             BigInteger prime = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
             System.out.println("prime=" + prime.toString(2));
+            // 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+            // 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+            // 1111111111111111111111111111111111111101000011
             System.out.println("prime.bitLength=" + prime.bitLength()); // 256
             System.out.println("prime.bitCount=" + prime.bitCount()); // 251
-            System.out.println("prime.isProbablePrime[10000]=" + prime.isProbablePrime(10000));
+            System.out.println("prime.isProbablePrime[10000]=" + prime.isProbablePrime(10000)); // true
         } catch (Exception e) {
             e.printStackTrace();
         }
