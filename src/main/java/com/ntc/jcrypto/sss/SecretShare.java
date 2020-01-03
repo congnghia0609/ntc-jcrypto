@@ -41,8 +41,8 @@ public class SecretShare {
     // possible to our security level; e.g.  desired security level of 128
     // bits -- too large and all the ciphertext is large; too small and security is compromised)
     // 13th Mersenne Prime is 2^521 - 1
-    public static final int NBIT = 127;
-    public static final BigInteger PRIME = new BigInteger("2").pow(NBIT).subtract(BigInteger.ONE); // 2^127 - 1
+    private static final int NBIT = 127;
+    private static final BigInteger PRIME = new BigInteger("2").pow(NBIT).subtract(BigInteger.ONE); // 2^127 - 1
     private Random rand = new SecureRandom();
     
     private int minimum;

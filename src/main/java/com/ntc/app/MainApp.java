@@ -17,6 +17,7 @@
 package com.ntc.app;
 
 import com.ntc.jcrypto.sss.SPoint;
+import com.ntc.jcrypto.sss.SSS;
 import com.ntc.jcrypto.sss.SecretShare;
 import java.math.BigInteger;
 import java.util.List;
@@ -34,7 +35,68 @@ public class MainApp {
     public static void main(String[] args) {
         try {
             // test1
-            test1();
+            //test1();
+            
+            // test3
+            test3();
+            
+            // test4
+            //test4();
+            
+            //test5
+            //test5();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void test3() {
+        try {
+            String s = "nghiatcxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+            SSS sss = new SSS();
+            List<String> arr = sss.create(3, 6, s);
+            //System.out.println(arr);
+//            for (int i=0; i<arr.size(); i++) {
+//                System.out.println("shares["+i+"]: " + arr.get(i));
+//            }
+            
+            System.out.println("secret: " + s);
+            String s1 = sss.combine(arr.subList(0, 3));
+            System.out.println("combines shares 1 length = " + arr.subList(0, 3).size());
+            System.out.println("secret: " + s1);
+            
+            String s2 = sss.combine(arr.subList(1, 5));
+            System.out.println("combines shares 2 length = " + arr.subList(1, 5).size());
+            System.out.println("secret: " + s2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void test5() {
+        try {
+            SSS sss = new SSS();
+            String s = "nghiatcxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+            System.out.println("s: " + s);
+            // Convert the secret to its respective 256-bit big.Int representation
+            List<BigInteger> secrets = sss.splitSecretToBigInt(s);
+            String r = sss.mergeBigIntToString(secrets);
+            System.out.println("r: " + r);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void test4() {
+        try {
+            SSS sss = new SSS();
+            BigInteger bi = new BigInteger("10");
+            System.out.println("bi: " + bi.toString(10));
+            String s = sss.toBase64(bi);
+            System.out.println("s: " + s);
+            BigInteger dbi = sss.fromBase64(s);
+            System.out.println("dbi: " + dbi.toString(10));
         } catch (Exception e) {
             e.printStackTrace();
         }
