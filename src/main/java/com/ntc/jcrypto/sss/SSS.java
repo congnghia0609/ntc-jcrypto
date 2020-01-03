@@ -314,7 +314,8 @@ public class SSS {
     // Returns the big.Int number base10 in base64 representation; note: this is
     // not a string representation; the base64 output is exactly 256 bits long
     public String toBase64(BigInteger number) {
-        return Base64.getUrlEncoder().encodeToString(number.toByteArray());
+        //return Base64.getUrlEncoder().encodeToString(number.toByteArray());
+        return Base64.getEncoder().encodeToString(number.toByteArray());
     }
     
     // Returns the number base64 in base 10 big.Int representation; note: this is
@@ -322,7 +323,8 @@ public class SSS {
     // bits long, and the output is an arbitrary size base 10 integer.
     // Returns -1 on failure
     public BigInteger fromBase64(String number) {
-        return new BigInteger(Base64.getUrlDecoder().decode(number));
+        //return new BigInteger(Base64.getUrlDecoder().decode(number));
+        return new BigInteger(Base64.getDecoder().decode(number));
     }
     
     // Takes in a given string to check if it is a valid secret
