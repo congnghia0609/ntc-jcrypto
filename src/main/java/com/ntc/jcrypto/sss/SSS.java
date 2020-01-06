@@ -412,33 +412,6 @@ public class SSS {
         return rs;
     }
     
-//    public List<BigInteger> splitSecretToBigInt2(String secret) {
-//        List<BigInteger> rs = new ArrayList<>();
-//        if (secret != null && !secret.isEmpty()) {
-//            byte[] sbyte = secret.getBytes(StandardCharsets.UTF_8);
-//            String hexData = encodeHexString(sbyte);
-//            //System.out.println("hexData: " + hexData);
-//            int count = (int) Math.ceil(hexData.length() / 64.0);
-//            //System.out.println("secret part count: " + count);
-//            for (int i=0; i<count; i++) {
-//                if ((i+1)*64 < hexData.length()) {
-//                    BigInteger bi = new BigInteger(hexData.substring(i*64, (i+1)*64), 16);
-//                    rs.add(bi);
-//                } else {
-//                    String last = hexData.substring(i*64, hexData.length());
-//                    String pading = "";
-//                    for (int j=0; j<(64-last.length()); j++) {
-//                        pading += "0";
-//                    }
-//                    last = pading + last;
-//                    BigInteger bi = new BigInteger(last, 16);
-//                    rs.add(bi);
-//                }
-//            }
-//        }
-//        return rs;
-//    }
-    
     // Converts an array of big.Ints to the original byte array, removing any
     // least significant nulls
     public String mergeBigIntToString(List<BigInteger> secrets) {
@@ -459,24 +432,6 @@ public class SSS {
         rs = new String(byteData, StandardCharsets.UTF_8);
         return rs;
     }
-    
-//    public String mergeBigIntToString2(List<BigInteger> secrets) {
-//        String rs = "";
-//        String hexData = "";
-//        for (BigInteger s : secrets) {
-//            String tmp = s.toString(16);
-//            //System.out.println("tmp: " + tmp);
-//            String pading = "";
-//            for (int j=0; j<(64-tmp.length()); j++) {
-//                pading += "0";
-//            }
-//            hexData = hexData + pading + tmp;
-//        }
-//        byte[] byteData = decodeHexString(hexData);
-//        byteData = trimRight(byteData);
-//        rs = new String(byteData, StandardCharsets.UTF_8);
-//        return rs;
-//    }
     
     // https://stackoverflow.com/questions/17003164/byte-array-with-padding-of-null-bytes-at-the-end-how-to-efficiently-copy-to-sma
     public byte[] trimRight(byte[] bytes) {
