@@ -382,7 +382,7 @@ public class SSS {
         return DatatypeConverter.parseHexBinary(hexString);
     }
     
-    // Converts a byte array into an a 256-bit big.Int, arraied based upon size of
+    // Converts a byte array into an a 256-bit BigInteger, arraied based upon size of
     // the input byte; all values are right-padded to length 256, even if the most
     // significant bit is zero.
     public List<BigInteger> splitSecretToBigInt(String secret) {
@@ -412,8 +412,7 @@ public class SSS {
         return rs;
     }
     
-    // Converts an array of big.Ints to the original byte array, removing any
-    // least significant nulls
+    // Converts an array of BigInteger to the original byte array, removing any least significant nulls
     public String mergeBigIntToString(List<BigInteger> secrets) {
         String rs = "";
         String hexData = "";
@@ -471,13 +470,11 @@ public class SSS {
             //Horner's method: y = (ax + b)x + c
             accum = accum.multiply(x).add(poly[part][i]).mod(PRIME);
         }
-        //log.info("accum: " + accum.toString());
         return accum;
     }
     
     // https://www.baeldung.com/java-base64-encode-and-decode
-    // Returns the big.Int number base10 in base64 representation; note: this is
-    // not a string representation; the base64 output is exactly 256 bits long
+    // Return Base64 string from BigInteger 256 bits long
     public String toBase64(BigInteger number) {
         String hexdata = number.toString(16);
         int n = 64 - hexdata.length();
@@ -486,10 +483,9 @@ public class SSS {
         }
         //System.out.println("hexdata: " + hexdata);
         return Base64.getUrlEncoder().encodeToString(decodeHexString(hexdata));
-        //return Base64.getUrlEncoder().encodeToString(number.toByteArray());
-        //return Base64.getEncoder().encodeToString(number.toByteArray());
     }
     
+    // Return Hex string from BigInteger 256 bits long
     public String toHex(BigInteger number) {
         String hexdata = number.toString(16);
         int n = 64 - hexdata.length();
@@ -500,17 +496,14 @@ public class SSS {
         return hexdata;
     }
     
-    // Returns the number base64 in base 10 big.Int representation; note: this is
-    // not coming from a string representation; the base64 input is exactly 256
-    // bits long, and the output is an arbitrary size base 10 integer.
-    // Returns -1 on failure
+    // Return BigInteger from Base64 string.
     public BigInteger fromBase64(String number) {
         byte[] bytedata = Base64.getUrlDecoder().decode(number);
         String hexdata = encodeHexString(bytedata);
         return new BigInteger(hexdata, 16);
-        //return new BigInteger(Base64.getDecoder().decode(number));
     }
     
+    // Return BigInteger from Hex string.
     public BigInteger fromHex(String number) {
         return new BigInteger(number, 16);
     }
@@ -539,6 +532,11 @@ public class SSS {
         return true;
     }
     
+    // Takes in a given string to check if it is a valid secret
+    // Requirements:
+    // 	 Length multiple of 128
+    //	 Can decode each 64 character block as Hex
+    // Returns only success/failure (bool)
     public boolean isValidShareHex(String candidate) throws Exception {
         if (candidate == null || candidate.isEmpty()) {
             throw new Exception("String is NULL or empty.");
@@ -557,6 +555,4 @@ public class SSS {
         }
         return true;
     }
-    
-    
 }
