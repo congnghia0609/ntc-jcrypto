@@ -126,14 +126,14 @@ public class SecretShare {
             BigInteger li = BigInteger.ONE;
             for (int j=0; j<listshares.size(); j++) {
                 if (i!=j) {
-                    // li = li * [(x-bX)/(aX-bX)...]
+                    // li = li * [(x-bX)/(aX-bX)] * ...
                     BigInteger bX = listshares.get(j).getX();
                     BigInteger tu = x.subtract(bX);
                     BigInteger mau = aX.subtract(bX).modInverse(PRIME);
                     li = li.multiply(tu).multiply(mau).mod(PRIME);
                 }
             }
-            // y = y + aY * [(x-bX)/(aX-bX)...]
+            // y = y + aY * [(x-bX)/(aX-bX)] * ...
             y = y.add(li.multiply(aY)).mod(PRIME);
         }
         return y;
