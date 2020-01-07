@@ -1,7 +1,7 @@
 # ntc-jcrypto
 ntc-jcrypto is module java cryptography  
 
-## 1. An implementation of Shamir's Secret Sharing Algorithm in Java
+## 1. An implementation of Shamir's Secret Sharing Algorithm 256-bits in Java
 
 ### Usage
 **Use encode/decode Base64**  

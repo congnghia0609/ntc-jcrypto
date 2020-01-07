@@ -118,7 +118,7 @@ public class SSS {
         return rs;
     }
     
-    // Takes a string array of shares encoded in base64 or Hex created via Shamir's Algorithm
+    // Takes a string array of shares encoded in Base64 or Hex created via Shamir's Algorithm
     // Note: the polynomial will converge if the specified minimum number of shares
     //       or more are passed to this function. Passing thus does not affect it
     //       Passing fewer however, simply means that the returned secret is wrong.
@@ -148,8 +148,8 @@ public class SSS {
             // and every share...
             for (int i=0; i<shares.size(); i++) { // LPI sum loop
                 // remember the current x and y values
-                BigInteger origin = points[i][j][0]; // ax
-                BigInteger originy = points[i][j][1]; // ay
+                BigInteger ax = points[i][j][0]; // ax
+                BigInteger ay = points[i][j][1]; // ay
                 BigInteger numerator = BigInteger.ONE; // LPI numerator
                 BigInteger denominator = BigInteger.ONE; // LPI denominator
                 // ...and for every other point...
@@ -157,22 +157,22 @@ public class SSS {
                     if (k != i) {
                         // combine them via half products
                         // x=0 ==> [(0-bx)/(ax-bx)] * ...
-                        BigInteger current = points[k][j][0]; // bx
-                        BigInteger negative = current.multiply(new BigInteger("-1")); // (-bx)
-                        BigInteger added = origin.subtract(current);
-                        numerator = numerator.multiply(negative).mod(PRIME); // (0-bx)
-                        denominator = denominator.multiply(added).mod(PRIME); // (ax-bx)
+                        BigInteger bx = points[k][j][0]; // bx
+                        BigInteger negbx = bx.multiply(new BigInteger("-1")); // (0-bx)
+                        BigInteger axbx = ax.subtract(bx); // (ax-bx)
+                        numerator = numerator.multiply(negbx).mod(PRIME); // (0-bx)*...
+                        denominator = denominator.multiply(axbx).mod(PRIME); // (ax-bx)*...
                     }
                 }
                 
                 // LPI product: x=0, y = ay * [(x-bx)/(ax-bx)] * ...
-                // ...multiply together the points (y)(numerator)(denominator)^-1...
-                BigInteger working = originy.multiply(numerator).mod(PRIME);
-                working = working.multiply(denominator.modInverse(PRIME)).mod(PRIME);
+                // multiply together the points (ay)(numerator)(denominator)^-1 ...
+                BigInteger fx = ay.multiply(numerator).mod(PRIME);
+                fx = fx.multiply(denominator.modInverse(PRIME)).mod(PRIME);
                 
-                // LPI sum
+                // LPI sum: s = fx + fx + ...
                 BigInteger secret = secrets.get(j);
-                secret = secret.add(working).mod(PRIME);
+                secret = secret.add(fx).mod(PRIME);
                 secrets.set(j, secret);
             }
         }
@@ -182,7 +182,7 @@ public class SSS {
         return rs;
     }
     
-    // Takes a string array of shares encoded in base64 created via Shamir's
+    // Takes a string array of shares encoded in Base64 created via Shamir's
     // Algorithm; each string must be of equal length of a multiple of 88 characters
     // as a single 88 character share is a pair of 256-bit numbers (x, y).
     public BigInteger[][][] decodeShareBase64(List<String> shares) throws Exception {
@@ -384,7 +384,7 @@ public class SSS {
     // Takes in a given string to check if it is a valid secret
     // Requirements:
     // 	 Length multiple of 88
-    //	 Can decode each 44 character block as base64
+    //	 Can decode each 44 character block as Base64
     // Returns only success/failure (bool)
     public boolean isValidShareBase64(String candidate) throws Exception {
         if (candidate == null || candidate.isEmpty()) {
