@@ -49,7 +49,7 @@ public class MainApp {
             
             
             // test5
-            test5();
+            //test5();
             
             // test6
             //test6();
@@ -58,7 +58,7 @@ public class MainApp {
             //test7();
             
             // test8
-            //test8();
+            test8();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,17 +83,17 @@ public class MainApp {
             System.out.println("\nsecret: " + s);
             System.out.println("secret.length: " + s.length());
             
-            String s1 = sss.combine2(arr.subList(0, 3));
+            String s1 = sss.combine(arr.subList(0, 3), false);
             System.out.println("combines shares 1 length = " + arr.subList(0, 3).size());
             System.out.println("secret: " + s1);
             System.out.println("secret.length: " + s1.length());
             
-            String s2 = sss.combine2(arr.subList(3, 6));
+            String s2 = sss.combine(arr.subList(3, 6), false);
             System.out.println("combines shares 2 length = " + arr.subList(3, 6).size());
             System.out.println("secret: " + s2);
             System.out.println("secret.length: " + s2.length());
             
-            String s3 = sss.combine2(arr.subList(1, 5));
+            String s3 = sss.combine(arr.subList(1, 5), false);
             System.out.println("combines shares 3 length = " + arr.subList(1, 5).size());
             System.out.println("secret: " + s3);
             System.out.println("secret.length: " + s3.length());
@@ -106,7 +106,7 @@ public class MainApp {
         try {
             String s = "nghiatcxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
             SSS sss = new SSS();
-            List<String> arr = sss.create2(3, 6, s);
+            List<String> arr = sss.create(3, 6, s, false);
             //System.out.println(arr);
             for (int i=0; i<arr.size(); i++) {
                 System.out.println("shares["+i+"]: " + arr.get(i));
@@ -115,17 +115,17 @@ public class MainApp {
             System.out.println("\nsecret: " + s);
             System.out.println("secret.length: " + s.length());
             
-            String s1 = sss.combine2(arr.subList(0, 3));
+            String s1 = sss.combine(arr.subList(0, 3), false);
             System.out.println("combines shares 1 length = " + arr.subList(0, 3).size());
             System.out.println("secret: " + s1);
             System.out.println("secret.length: " + s1.length());
             
-            String s2 = sss.combine2(arr.subList(3, 6));
+            String s2 = sss.combine(arr.subList(3, 6), false);
             System.out.println("combines shares 2 length = " + arr.subList(3, 6).size());
             System.out.println("secret: " + s2);
             System.out.println("secret.length: " + s2.length());
             
-            String s3 = sss.combine2(arr.subList(1, 5));
+            String s3 = sss.combine(arr.subList(1, 5), false);
             System.out.println("combines shares 3 length = " + arr.subList(1, 5).size());
             System.out.println("secret: " + s3);
             System.out.println("secret.length: " + s3.length());
@@ -152,17 +152,17 @@ public class MainApp {
             System.out.println("\nsecret: " + s);
             System.out.println("secret.length: " + s.length());
             
-            String s1 = sss.combine(arr.subList(0, 3));
+            String s1 = sss.combine(arr.subList(0, 3), true);
             System.out.println("combines shares 1 length = " + arr.subList(0, 3).size());
             System.out.println("secret: " + s1);
             System.out.println("secret.length: " + s1.length());
             
-            String s2 = sss.combine(arr.subList(3, 6));
+            String s2 = sss.combine(arr.subList(3, 6), true);
             System.out.println("combines shares 2 length = " + arr.subList(3, 6).size());
             System.out.println("secret: " + s2);
             System.out.println("secret.length: " + s2.length());
             
-            String s3 = sss.combine(arr.subList(1, 5));
+            String s3 = sss.combine(arr.subList(1, 5), true);
             System.out.println("combines shares 3 length = " + arr.subList(1, 5).size());
             System.out.println("secret: " + s3);
             System.out.println("secret.length: " + s3.length());
@@ -175,7 +175,7 @@ public class MainApp {
         try {
             String s = "nghiatcxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
             SSS sss = new SSS();
-            List<String> arr = sss.create(3, 6, s);
+            List<String> arr = sss.create(3, 6, s, true);
             //System.out.println(arr);
             for (int i=0; i<arr.size(); i++) {
                 System.out.println("shares["+i+"]: " + arr.get(i));
@@ -184,17 +184,17 @@ public class MainApp {
             System.out.println("\nsecret: " + s);
             System.out.println("secret.length: " + s.length());
             
-            String s1 = sss.combine(arr.subList(0, 3));
+            String s1 = sss.combine(arr.subList(0, 3), true);
             System.out.println("combines shares 1 length = " + arr.subList(0, 3).size());
             System.out.println("secret: " + s1);
             System.out.println("secret.length: " + s1.length());
             
-            String s2 = sss.combine(arr.subList(3, 6));
+            String s2 = sss.combine(arr.subList(3, 6), true);
             System.out.println("combines shares 2 length = " + arr.subList(3, 6).size());
             System.out.println("secret: " + s2);
             System.out.println("secret.length: " + s2.length());
             
-            String s3 = sss.combine(arr.subList(1, 5));
+            String s3 = sss.combine(arr.subList(1, 5), true);
             System.out.println("combines shares 3 length = " + arr.subList(1, 5).size());
             System.out.println("secret: " + s3);
             System.out.println("secret.length: " + s3.length());
