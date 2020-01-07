@@ -1,6 +1,15 @@
 # ntc-jcrypto
 ntc-jcrypto is module java cryptography  
 
+## Maven
+```Xml
+<dependency>
+    <groupId>com.streetcodevn</groupId>
+    <artifactId>ntc-jcrypto</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
 ## 1. An implementation of Shamir's Secret Sharing Algorithm 256-bits in Java
 
 ### Usage
