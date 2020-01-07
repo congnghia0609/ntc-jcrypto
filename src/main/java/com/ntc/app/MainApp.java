@@ -55,10 +55,10 @@ public class MainApp {
             //test6();
             
             // test7
-            //test7();
+            test7();
             
             // test8
-            test8();
+            //test8();
         } catch (Exception e) {
             e.printStackTrace();
         }

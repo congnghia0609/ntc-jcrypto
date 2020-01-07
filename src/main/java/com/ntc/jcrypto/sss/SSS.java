@@ -35,8 +35,8 @@ public class SSS {
     private static final BigInteger PRIME = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
     private Random rand = new SecureRandom();
     
-    // Returns a new arary of secret shares (encoding x,y pairs as base64 strings)
-    // created by Shamir's Secret Sharing Algorithm requring a minimum number of
+    // Returns a new array of secret shares (encoding x,y pairs as Base64 or Hex strings)
+    // created by Shamir's Secret Sharing Algorithm requiring a minimum number of
     // share to recreate, of length shares, from the input secret raw as a string
     public List<String> create(int minimum, int shares, String secret, boolean isBase64) {
         List<String> rs = new ArrayList<>();
@@ -57,9 +57,10 @@ public class SSS {
         // Create the polynomial of degree (minimum - 1); that is, the highest
         // order term is (minimum-1), though as there is a constant term with
         // order 0, there are (minimum) number of coefficients.
-        //
+        // 
         // However, the polynomial object is a 2d array, because we are constructing
         // a different polynomial for each part of the secret
+        // 
         // polynomial[parts][minimum]
         BigInteger[][] polynomial = new BigInteger[secrets.size()][minimum];
         for (int i=0; i<secrets.size(); i++) {
@@ -80,30 +81,27 @@ public class SSS {
         // Again, because secret is an array, each share could have multiple parts
         // over which we are computing Shamir's Algorithm. The last dimension is
         // always two, as it is storing an x, y pair of points.
-        //
-        // Note: this array is technically unnecessary due to creating result
-        // in the inner loop. Can disappear later if desired. [TODO]
-        //
+        // 
         // points[shares][parts][2]
         BigInteger[][][] points = new BigInteger[shares][secrets.size()][2];
         
         // For every share...
         for (int i=0; i<shares; i++) {
             String s = "";
-            // ...and every part of the secret...
+            // and every part of the secret...
             for (int j=0; j<secrets.size(); j++) {
-                // ...generate a new x-coordinate...
+                // generate a new x-coordinate
                 BigInteger number = random();
                 while (inNumbers(numbers, number)) {
                     number = random();
                 }
                 numbers.add(number);
                 
-                // ...and evaluate the polynomial at that point...
+                // and evaluate the polynomial at that point
                 points[i][j][0] = number;
                 points[i][j][1] = evaluatePolynomial(polynomial, j, number);
                 
-                // ...add it to results...
+                // encode to Base64 or Hex.
                 if (isBase64) {
                     s += toBase64(points[i][j][0]);
                     s += toBase64(points[i][j][1]);
@@ -120,90 +118,7 @@ public class SSS {
         return rs;
     }
     
-//    public List<String> create2(int minimum, int shares, String secret) {
-//        // Verify minimum isn't greater than shares; there is no way to recreate
-//        // the original polynomial in our current setup, therefore it doesn't make
-//        // sense to generate fewer shares than are needed to reconstruct the secret.
-//        List<String> rs = new ArrayList<>();
-//        if (minimum > shares) {
-//            throw new ExceptionInInitializerError("cannot require more shares then existing");
-//        }
-//        
-//        // Convert the secret to its respective 256-bit big.Int representation
-//        List<BigInteger> secrets = splitSecretToBigInt(secret);
-//        //System.out.println("====================== create ======================");
-//        //System.out.println(secrets);
-//        
-//        // List of currently used numbers in the polynomial
-//        List<BigInteger> numbers = new ArrayList<>();
-//        numbers.add(BigInteger.ZERO);
-//        
-//        // Create the polynomial of degree (minimum - 1); that is, the highest
-//        // order term is (minimum-1), though as there is a constant term with
-//        // order 0, there are (minimum) number of coefficients.
-//        //
-//        // However, the polynomial object is a 2d array, because we are constructing
-//        // a different polynomial for each part of the secret
-//        // polynomial[parts][minimum]
-//        BigInteger[][] polynomial = new BigInteger[secrets.size()][minimum];
-//        for (int i=0; i<secrets.size(); i++) {
-//            polynomial[i][0] = secrets.get(i);
-//            for (int j=1; j<minimum; j++) {
-//                // Each coefficient should be unique
-//                BigInteger number = random();
-//                while (inNumbers(numbers, number)) {
-//                    number = random();
-//                }
-//                numbers.add(number);
-//                
-//                polynomial[i][j] = number;
-//            }
-//        }
-//        //System.out.println("====================== polynomial ======================");
-//        //System.out.println(Arrays.deepToString(polynomial));
-//        
-//        // Create the secrets object; this holds the (x, y) points of each share.
-//        // Again, because secret is an array, each share could have multiple parts
-//        // over which we are computing Shamir's Algorithm. The last dimension is
-//        // always two, as it is storing an x, y pair of points.
-//        //
-//        // Note: this array is technically unnecessary due to creating result
-//        // in the inner loop. Can disappear later if desired. [TODO]
-//        //
-//        // points[shares][parts][2]
-//        BigInteger[][][] points = new BigInteger[shares][secrets.size()][2];
-//        
-//        // For every share...
-//        for (int i=0; i<shares; i++) {
-//            String s = "";
-//            // ...and every part of the secret...
-//            for (int j=0; j<secrets.size(); j++) {
-//                // ...generate a new x-coordinate...
-//                BigInteger number = random();
-//                while (inNumbers(numbers, number)) {
-//                    number = random();
-//                }
-//                numbers.add(number);
-//                
-//                // ...and evaluate the polynomial at that point...
-//                points[i][j][0] = number;
-//                points[i][j][1] = evaluatePolynomial(polynomial, j, number);
-//                
-//                // ...add it to results...
-//                s += toHex(points[i][j][0]);
-//                //System.out.println("x[share-"+i+"][part-"+j+"]: " + points[i][j][0].toString(10));
-//                s += toHex(points[i][j][1]);
-//                //System.out.println("y[share-"+i+"][part-"+j+"]: " + points[i][j][1].toString(10));
-//            }
-//            rs.add(s);
-//        }
-//        
-//        return rs;
-//    }
-    
-    // Takes a string array of shares encoded in base64 created via Shamir's
-    // Algorithm; each string must be of equal length of a multiple of 88 characters
-    // as a single 88 character share is a pair of 256-bit numbers (x, y).
+    // Takes a string array of shares encoded in base64 or Hex created via Shamir's Algorithm
     // Note: the polynomial will converge if the specified minimum number of shares
     //       or more are passed to this function. Passing thus does not affect it
     //       Passing fewer however, simply means that the returned secret is wrong.
@@ -215,6 +130,7 @@ public class SSS {
         
         // Recreate the original object of x, y points, based upon number of shares
         // and size of each share (number of parts in the secret).
+        // 
         // points[shares][parts][2]
         BigInteger[][][] points;
         if (isBase64) {
@@ -229,9 +145,9 @@ public class SSS {
         int numSecret = points[0].length;
         for (int j=0; j<numSecret; j++) {
             secrets.add(BigInteger.ZERO);
-            // ...and every share...
+            // and every share...
             for (int i=0; i<shares.size(); i++) { // LPI sum loop
-                // ...remember the current x and y values...
+                // remember the current x and y values
                 BigInteger origin = points[i][j][0]; // ax
                 BigInteger originy = points[i][j][1]; // ay
                 BigInteger numerator = BigInteger.ONE; // LPI numerator
@@ -239,7 +155,7 @@ public class SSS {
                 // ...and for every other point...
                 for (int k=0; k<shares.size(); k++) { // LPI product loop
                     if (k != i) {
-                        // ...combine them via half products...
+                        // combine them via half products
                         // x=0 ==> [(0-bx)/(ax-bx)] * ...
                         BigInteger current = points[k][j][0]; // bx
                         BigInteger negative = current.multiply(new BigInteger("-1")); // (-bx)
@@ -266,90 +182,33 @@ public class SSS {
         return rs;
     }
     
-//    public String combine2(List<String> shares) throws Exception {
-//        String rs = "";
-//        if (shares == null || shares.isEmpty()) {
-//            throw new Exception("shares is NULL or empty");
-//        }
-//        
-//        // Recreate the original object of x, y points, based upon number of shares
-//        // and size of each share (number of parts in the secret).
-//        // points[shares][parts][2]
-//        BigInteger[][][] points = decodeShareHex(shares);
-//        
-//        // Use Lagrange Polynomial Interpolation (LPI) to reconstruct the secret.
-//        // For each part of the secret (clearest to iterate over)...
-//        List<BigInteger> secrets = new ArrayList<>();
-//        int numSecret = points[0].length;
-//        //System.out.println("numSecret: " + numSecret);
-//        for (int j=0; j<numSecret; j++) {
-//            secrets.add(BigInteger.ZERO);
-//            // ...and every share...
-//            for (int i=0; i<shares.size(); i++) { // LPI sum loop
-//                //System.out.println("i: " + i);
-//                // ...remember the current x and y values...
-//                BigInteger origin = points[i][j][0];
-//                BigInteger originy = points[i][j][1];
-//                BigInteger numerator = BigInteger.ONE; // LPI numerator
-//                BigInteger denominator = BigInteger.ONE; // LPI denominator
-//                // ...and for every other point...
-//                for (int k=0; k<shares.size(); k++) { // LPI product loop
-//                    if (k != i) {
-//                        // ...combine them via half products...
-//                        BigInteger current = points[k][j][0];
-//                        BigInteger negative = current.multiply(new BigInteger("-1")).mod(PRIME);
-//                        BigInteger added = origin.subtract(current);
-//                        numerator = numerator.multiply(negative).mod(PRIME);
-//                        denominator = denominator.multiply(added).mod(PRIME);
-//                    }
-//                }
-//                
-//                // LPI product
-//                // ...multiply together the points (y)(numerator)(denominator)^-1...
-//                BigInteger working = originy.multiply(numerator).mod(PRIME);
-//                working = working.multiply(denominator.modInverse(PRIME)).mod(PRIME);
-//                
-//                // LPI sum
-//                BigInteger secret = secrets.get(j);
-//                secret = secret.add(working).mod(PRIME);
-//                secrets.set(j, secret);
-//            }
-//        }
-//        
-//        // ...and return the result!
-//        //System.out.println("====================== combine ======================");
-//        //System.out.println(secrets);
-//        rs = mergeBigIntToString(secrets);
-//        return rs;
-//    }
-    
     // Takes a string array of shares encoded in base64 created via Shamir's
     // Algorithm; each string must be of equal length of a multiple of 88 characters
     // as a single 88 character share is a pair of 256-bit numbers (x, y).
     public BigInteger[][][] decodeShareBase64(List<String> shares) throws Exception {
         // Recreate the original object of x, y points, based upon number of shares
         // and size of each share (number of parts in the secret).
+        // 
         // points[shares][parts][2]
         BigInteger[][][] points = new BigInteger[shares.size()][][];
         
         // For each share...
         for (int i=0; i<shares.size(); i++) {
-            // ...ensure that it is valid...
+            // ensure that it is valid
             if (isValidShareBase64(shares.get(i)) == false) {
                 throw new Exception("one of the shares is invalid");
             }
             
-            // ...find the number of parts it represents...
+            // find the number of parts it represents.
             String share = shares.get(i);
             int count = share.length() / 88;
-            //System.out.println("count: " + count);
             points[i] = new BigInteger[count][];
             
-            // ...and for each part, find the x,y pair...
+            // and for each part, find the x,y pair...
             for (int j=0; j<count; j++) {
                 points[i][j] = new BigInteger[2];
                 String cshare = share.substring(j*88, (j+1)*88);
-                // ...decoding from base 64.
+                // decoding from Base64.
                 points[i][j][0] = fromBase64(cshare.substring(0, 44));
                 points[i][j][1] = fromBase64(cshare.substring(44, 88));
             }
@@ -363,27 +222,27 @@ public class SSS {
     public BigInteger[][][] decodeShareHex(List<String> shares) throws Exception {
         // Recreate the original object of x, y points, based upon number of shares
         // and size of each share (number of parts in the secret).
+        // 
         // points[shares][parts][2]
         BigInteger[][][] points = new BigInteger[shares.size()][][];
         
         // For each share...
         for (int i=0; i<shares.size(); i++) {
-            // ...ensure that it is valid...
+            // ensure that it is valid
             if (isValidShareHex(shares.get(i)) == false) {
                 throw new Exception("one of the shares is invalid");
             }
             
-            // ...find the number of parts it represents...
+            // find the number of parts it represents.
             String share = shares.get(i);
             int count = share.length() / 128;
-            //System.out.println("count: " + count);
             points[i] = new BigInteger[count][];
             
-            // ...and for each part, find the x,y pair...
+            // and for each part, find the x,y pair...
             for (int j=0; j<count; j++) {
                 points[i][j] = new BigInteger[2];
                 String cshare = share.substring(j*128, (j+1)*128);
-                // ...decoding from base 64.
+                // decoding from Hex.
                 points[i][j][0] = fromHex(cshare.substring(0, 64));
                 points[i][j][1] = fromHex(cshare.substring(64, 128));
             }
@@ -402,16 +261,14 @@ public class SSS {
     }
     
     // Converts a byte array into an a 256-bit BigInteger, arraied based upon size of
-    // the input byte; all values are right-padded to length 256, even if the most
+    // the input byte; all values are right-padded to length 256 bit, even if the most
     // significant bit is zero.
     public List<BigInteger> splitSecretToBigInt(String secret) {
         List<BigInteger> rs = new ArrayList<>();
         if (secret != null && !secret.isEmpty()) {
             byte[] sbyte = secret.getBytes(StandardCharsets.UTF_8);
             String hexData = encodeHexString(sbyte);
-            //System.out.println("hexData: " + hexData);
             int count = (int) Math.ceil(hexData.length() / 64.0);
-            //System.out.println("secret part count: " + count);
             for (int i=0; i<count; i++) {
                 if ((i+1)*64 < hexData.length()) {
                     BigInteger bi = new BigInteger(hexData.substring(i*64, (i+1)*64), 16);
@@ -437,7 +294,6 @@ public class SSS {
         String hexData = "";
         for (BigInteger s : secrets) {
             String tmp = s.toString(16);
-            //System.out.println("tmp: " + tmp);
             String pading = "";
             for (int j=0; j<(64-tmp.length()); j++) {
                 pading += "0";
@@ -500,7 +356,6 @@ public class SSS {
         for (int i=0; i<n; i++) {
             hexdata = "0" + hexdata;
         }
-        //System.out.println("hexdata: " + hexdata);
         return Base64.getUrlEncoder().encodeToString(decodeHexString(hexdata));
     }
     
@@ -511,7 +366,6 @@ public class SSS {
         for (int i=0; i<n; i++) {
             hexdata = "0" + hexdata;
         }
-        //System.out.println("hexdata: " + hexdata);
         return hexdata;
     }
     
