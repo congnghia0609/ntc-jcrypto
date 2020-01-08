@@ -77,8 +77,8 @@ public class SSS {
             }
         }
         
-        // Create the secrets object; this holds the (x, y) points of each share.
-        // Again, because secret is an array, each share could have multiple parts
+        // Create the points object; this holds the (x, y) points of each share.
+        // Again, because secrets is an array, each share could have multiple parts
         // over which we are computing Shamir's Algorithm. The last dimension is
         // always two, as it is storing an x, y pair of points.
         // 
@@ -152,7 +152,7 @@ public class SSS {
                 BigInteger ay = points[i][j][1]; // ay
                 BigInteger numerator = BigInteger.ONE; // LPI numerator
                 BigInteger denominator = BigInteger.ONE; // LPI denominator
-                // ...and for every other point...
+                // and for every other point...
                 for (int k=0; k<shares.size(); k++) { // LPI product loop
                     if (k != i) {
                         // combine them via half products
@@ -275,11 +275,10 @@ public class SSS {
                     rs.add(bi);
                 } else {
                     String last = hexData.substring(i*64, hexData.length());
-                    String pading = "";
-                    for (int j=0; j<(64-last.length()); j++) {
-                        pading += "0";
+                    int n = 64-last.length();
+                    for (int j=0; j<n; j++) {
+                        last += "0";
                     }
-                    last += pading;
                     BigInteger bi = new BigInteger(last, 16);
                     rs.add(bi);
                 }
@@ -294,11 +293,11 @@ public class SSS {
         String hexData = "";
         for (BigInteger s : secrets) {
             String tmp = s.toString(16);
-            String pading = "";
-            for (int j=0; j<(64-tmp.length()); j++) {
-                pading += "0";
+            int n = 64-tmp.length();
+            for (int j=0; j<n; j++) {
+                tmp = "0" + tmp;
             }
-            hexData = hexData + pading + tmp;
+            hexData = hexData + tmp;
         }
         byte[] byteData = decodeHexString(hexData);
         byteData = trimRight(byteData);
@@ -388,7 +387,7 @@ public class SSS {
     // Returns only success/failure (bool)
     public boolean isValidShareBase64(String candidate) throws Exception {
         if (candidate == null || candidate.isEmpty()) {
-            throw new Exception("String is NULL or empty.");
+            return false;
         }
         if (candidate.length()%88 != 0) {
             return false;
@@ -412,7 +411,7 @@ public class SSS {
     // Returns only success/failure (bool)
     public boolean isValidShareHex(String candidate) throws Exception {
         if (candidate == null || candidate.isEmpty()) {
-            throw new Exception("String is NULL or empty.");
+            return false;
         }
         if (candidate.length()%128 != 0) {
             return false;
