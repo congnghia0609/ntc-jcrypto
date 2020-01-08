@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.streetcodevn</groupId>
     <artifactId>ntc-jcrypto</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>ntc-jcrypto</name>
     <description>ntc-jcrypto is module java cryptography</description>
