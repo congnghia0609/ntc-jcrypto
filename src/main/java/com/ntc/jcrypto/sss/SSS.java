@@ -336,7 +336,7 @@ public class SSS {
     
     // Compute the polynomial value using Horner's method.
     // https://en.wikipedia.org/wiki/Horner%27s_method
-    // y = a + bx + cx^2 + dx^3 = ((dx + c) + b)x + a
+    // y = a + bx + cx^2 + dx^3 = ((dx + c)x + b)x + a
     private BigInteger evaluatePolynomial(BigInteger[][] poly, int part, BigInteger x) {
         int last = poly[part].length - 1;
         BigInteger accum = poly[part][last];
