@@ -32,6 +32,8 @@ import org.slf4j.LoggerFactory;
 public class SSS {
     private static final Logger log = LoggerFactory.getLogger(SSS.class);
     
+    // https://primes.utm.edu/lists/2small/200bit.html
+    // PRIME = 2^n - k = 2^256 - 189
     private static final BigInteger PRIME = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
     private Random rand = new SecureRandom();
     

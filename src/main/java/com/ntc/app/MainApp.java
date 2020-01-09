@@ -52,13 +52,13 @@ public class MainApp {
             test5();
             
             // test6
-            //test6();
+            test6();
             
             // test7
             test7();
             
             // test8
-            //test8();
+            test8();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -233,14 +233,20 @@ public class MainApp {
     
     public static void test2() {
         try {
-            BigInteger prime = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
-            System.out.println("prime=" + prime.toString(2));
-            // 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-            // 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-            // 1111111111111111111111111111111111111101000011
-            System.out.println("prime.bitLength=" + prime.bitLength()); // 256
-            System.out.println("prime.bitCount=" + prime.bitCount()); // 251
-            System.out.println("prime.isProbablePrime[10000]=" + prime.isProbablePrime(10000)); // true
+//            BigInteger prime = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
+//            System.out.println("prime=" + prime.toString(2));
+//            // 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+//            // 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+//            // 1111111111111111111111111111111111111101000011
+//            System.out.println("prime.bitLength=" + prime.bitLength()); // 256
+//            System.out.println("prime.bitCount=" + prime.bitCount()); // 251
+//            System.out.println("prime.isProbablePrime[10000]=" + prime.isProbablePrime(10000)); // true
+
+            // https://primes.utm.edu/lists/2small/200bit.html
+            // PRIME = 2^n - k = 2^256 - 189
+            BigInteger prime = new BigInteger("2").pow(256).subtract(new BigInteger("189"));
+            System.out.println("prime=" + prime.toString(10));
+            // prime=115792089237316195423570985008687907853269984665640564039457584007913129639747
         } catch (Exception e) {
             e.printStackTrace();
         }
