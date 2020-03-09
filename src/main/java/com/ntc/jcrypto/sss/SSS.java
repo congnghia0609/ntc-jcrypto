@@ -262,7 +262,7 @@ public class SSS {
         return DatatypeConverter.parseHexBinary(hexString);
     }
     
-    // Converts a byte array into an a 256-bit BigInteger, arraied based upon size of
+    // Converts a byte array into an a 256-bit BigInteger, array based upon size of
     // the input byte; all values are right-padded to length 256 bit, even if the most
     // significant bit is zero.
     public List<BigInteger> splitSecretToBigInt(String secret) {
