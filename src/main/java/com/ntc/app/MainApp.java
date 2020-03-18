@@ -16,9 +16,7 @@
 
 package com.ntc.app;
 
-import com.ntc.jcrypto.sss.SPoint;
 import com.ntc.jcrypto.sss.SSS;
-import com.ntc.jcrypto.sss.SecretShare;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +25,8 @@ import java.util.List;
  *
  * @author nghiatc
  * @since Dec 31, 2019
+ * 
+ * mvn package -Dmaven.test.skip=true
  */
 public class MainApp {
 
@@ -35,6 +35,9 @@ public class MainApp {
      */
     public static void main(String[] args) {
         try {
+            // testDev
+            //testDev();
+            
             // test1
             //test1();
             
@@ -49,16 +52,40 @@ public class MainApp {
             
             
             // test5
-            test5();
+//            test5();
             
             // test6
-            test6();
+            //test6();
             
             // test7
-            test7();
+            //test7();
             
             // test8
-            test8();
+            //test8();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void testDev() {
+        try {
+            SSS sss = new SSS();
+            
+            // Dev1: encode & decode
+            BigInteger number = new BigInteger("67356225285819719212258382314594931188352598651646313425411610888829358649431");
+            System.out.println("67356225285819719212258382314594931188352598651646313425411610888829358649431");
+            // encode
+            String b64data = sss.toBase64(number);
+            System.out.println(b64data.length()); // 44
+            System.out.println(b64data); // lOpFwywpCeVAcK0_LOKG-YtW71xyj1bX06CcW7VZMFc=
+            String hexdata = sss.toHex(number);
+            System.out.println(hexdata.length()); // 64
+            System.out.println(hexdata); // 94ea45c32c2909e54070ad3f2ce286f98b56ef5c728f56d7d3a09c5bb5593057
+            // decode
+            BigInteger numb64decode = sss.fromBase64(b64data);
+            System.out.println(numb64decode.toString(10));
+            BigInteger numhexdecode = sss.fromHex(hexdata);
+            System.out.println(numhexdecode.toString(10));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -220,12 +247,16 @@ public class MainApp {
     public static void test3() {
         try {
             SSS sss = new SSS();
-            BigInteger bi = new BigInteger("10");
-            System.out.println("bi: " + bi.toString(10));
-            String s = sss.toBase64(bi);
-            System.out.println("s: " + s);
-            BigInteger dbi = sss.fromBase64(s);
-            System.out.println("dbi: " + dbi.toString(10));
+            BigInteger number = new BigInteger("67356225285819719212258382314594931188352598651646313425411610888829358649431");
+            System.out.println(number.toString(10));
+            String b64data = sss.toBase64(number);
+            System.out.println(b64data); // lOpFwywpCeVAcK0_LOKG-YtW71xyj1bX06CcW7VZMFc=
+            String hexdata = sss.toHex(number);
+            System.out.println(hexdata); // 94ea45c32c2909e54070ad3f2ce286f98b56ef5c728f56d7d3a09c5bb5593057
+            BigInteger numb64decode = sss.fromBase64(b64data);
+            System.out.println(numb64decode);
+            BigInteger numhexdecode = sss.fromHex(hexdata);
+            System.out.println(numhexdecode);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -252,38 +283,5 @@ public class MainApp {
         }
     }
     
-    public static void test1() {
-        try {
-            SecretShare ss = new SecretShare(3, 6);
-            System.out.println("Secret: " + ss.getPoly());
-            System.out.println("Shares: ");
-            List<SPoint> listPoints = ss.getPoints();
-            for (SPoint sp : listPoints) {
-                System.out.println(sp);
-            }
-            
-            System.out.println("");
-            List<SPoint> subset1 = ss.getPoints().subList(0, 3);
-            System.out.println("subset1: " + subset1);
-            System.out.println("Secret recovered from minimum subset1 of shares: " + ss.recoverSecret(subset1));
-            
-            System.out.println("");
-            List<SPoint> subset2 = ss.getPoints().subList(3, 6);
-            System.out.println("subset2: " + subset2);
-            System.out.println("Secret recovered from minimum subset2 of shares: " + ss.recoverSecret(subset2));
-            
-            System.out.println("");
-            List<SPoint> subset3 = ss.getPoints().subList(1, 5);
-            System.out.println("subset3: " + subset3);
-            System.out.println("Secret recovered from minimum subset3 of shares: " + ss.recoverSecret(subset3));
-            
-//            System.out.println("");
-//            List<SPoint> subset4 = ss.getPoints().subList(0, 2);
-//            System.out.println("subset4: " + subset4);
-//            System.out.println("Secret recovered from minimum subset4 of shares: " + ss.recoverSecret(subset4));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
