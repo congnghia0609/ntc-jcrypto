@@ -397,8 +397,8 @@ public class SSS {
         for (int i=0; i<count; i++) {
             String part = candidate.substring(i*44, (i+1)*44);
             BigInteger decode = fromBase64(part);
-            // decode < 0 || decode > PRIME ==> false
-            if (decode.compareTo(BigInteger.ONE) == -1 || decode.compareTo(PRIME) == 1) {
+            // decode <= 0 || decode >= PRIME ==> false
+            if (decode.compareTo(BigInteger.ZERO) <= 0 || decode.compareTo(PRIME) >= 0) {
                 return false;
             }
         }
@@ -421,8 +421,8 @@ public class SSS {
         for (int i=0; i<count; i++) {
             String part = candidate.substring(i*64, (i+1)*64);
             BigInteger decode = fromHex(part);
-            // decode < 0 || decode > PRIME ==> false
-            if (decode.compareTo(BigInteger.ONE) == -1 || decode.compareTo(PRIME) == 1) {
+            // decode <= 0 || decode >= PRIME ==> false
+            if (decode.compareTo(BigInteger.ZERO) <= 0 || decode.compareTo(PRIME) >= 0) {
                 return false;
             }
         }

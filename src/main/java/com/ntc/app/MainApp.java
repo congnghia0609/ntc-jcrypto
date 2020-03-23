@@ -52,16 +52,16 @@ public class MainApp {
             
             
             // test5
-//            test5();
+            test5();
             
             // test6
-            //test6();
+            test6();
             
             // test7
-            //test7();
+            test7();
             
             // test8
-            //test8();
+            test8();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,9 +103,9 @@ public class MainApp {
             arr.add("c58b906aa93eaca1a19e67246cac713a8079f93fefb95a186545264c95e4e479ced656ccf2f8e7a41df5c0a9dd79524b9ab9d1731067471a211f4bb0890d95ace9861f599a19e2ec399ba7c3f523aeee644b9d704b7199a71df25452c94c7e7ce68651bb71fe5bcc400d82d2f503f9f49f1bd778a58285d5e46d893de45729aa32667dfe73df71713007df58de20c4045c9e72589772bc325817d3a5d34861cb2afa8959bd9fc8ff30c29695d24b35f10260db5e5f6e119172961a3f193d1cd9e1cd3853ec3d1b7a15ce8f3a1e443969de9f9691b6fb0d348055686e907156b33921b281b8dbd07848d0ce743dac94e983250b873848dd0afcc907110fc7921e");
             arr.add("76a5d1a340078c86c85a809c3cdfb539dccbc8af95e7cefba1ab6447eaec38636ec099086e72de93aef8d0c28fa0a9677e0fd2e3b6792c7d8feee462a570926a1779bf8b6ee15c3d46eb94d8e98049c4fcd1c27958a853ff1b177233c8ffd0fbc0ac2d5d05a48b102145927149c07457ce2d39f4f9f1a7df1ace57b5611459f488a4b1f49d8df025d67f12517a18e43f54d6eb4dfa5fb3869075b73e701f86e032a7c33bffad4a94460f41a76a2153d31444442460eb50e17754d458bac65bbd386f38e8a11e0f87201f5d3a0df4d0fd2d291d5b34fdcb4b504c3ea585ff032185b21d95b3b97a7a1be36833c5fd4a248b8375b7c03a8acf2301167b4fece766");
             //System.out.println(arr);
-            for (int i=0; i<arr.size(); i++) {
-                System.out.println("shares["+i+"]: " + arr.get(i));
-            }
+//            for (int i=0; i<arr.size(); i++) {
+//                System.out.println("shares["+i+"]: " + arr.get(i));
+//            }
             
             System.out.println("\nsecret: " + s);
             System.out.println("secret.length: " + s.length());
@@ -135,9 +135,9 @@ public class MainApp {
             SSS sss = new SSS();
             List<String> arr = sss.create(3, 6, s, false);
             //System.out.println(arr);
-            for (int i=0; i<arr.size(); i++) {
-                System.out.println("shares["+i+"]: " + arr.get(i));
-            }
+//            for (int i=0; i<arr.size(); i++) {
+//                System.out.println("shares["+i+"]: " + arr.get(i));
+//            }
             
             System.out.println("\nsecret: " + s);
             System.out.println("secret.length: " + s.length());
@@ -172,9 +172,9 @@ public class MainApp {
             arr.add("csGGaMUuHDAaDonxJL0KfyG0Ss-T1dbuwZOJ-hxNI0o=UQlyoA6i2VMc2Kysl1sH1TC1zLeXOuAD8bHO0ojTRbc=IqdpT9Kx3J7k9-yU1D3pTKO2p3vX0H2NzipoQOWToNk=Q6ZE-2epO7xYtQs7fIQzn1gzgVDRxAVhqxIkIF_mJP4=M8wNAoP-KRL-aRx92guGJHG0aqB7Sil6dGWMhTGDwWk=SJhC8RRdnXJzpzdiGPGrJwUhyw0fURpwLSlVK20UxtY=9Vtngtd1PMfw9cIapuKX6ItqueqUG6S1VNGyWYmSCqk=h3zbVA1kDoxD_SiNGasrJX4vtW9kJs0KxA7KPogv9vA=");
             arr.add("9QKSk5UpqHTDgqNzABhY1cpKJHW2Pa_qbMBlHS5sRwU=-MLMyVwzt3o9IbtsAfmslyniAJQ-jTfqrL2LFGoNRMs=x7qgHtj-OjDYv6WYtfklWEOyFguuZLHOCjn5Jn5a6J0=oM0tg3QDP8LsBDTWctnLHFtNpC9rs89FywzRL6KgJ70=e28jTt7Q-T9Ao4fZjZjZ0FRpfkvT9wSuXR17mEWSzSI=ZTFKrvAsNsmcQG0Ca4dSixgD20gXqQLJj8vdO30bzdM=Yy-smQCOzm2UVUPY7FX6_EkDoSrS4K6sfQ7X8CQedq8=xHp9pi-NJPosjyRQPypxs95j126JEk0D5qLZL6scx40=");
             arr.add("jBMScPNqLqtB3GASqZ3XZux0Bh3vhGYw2h1SeaZJjEo=ZiguZLL3xU7FaEAynDjifHkynzRlm00eVNPhnr2NNW4=hJ_hcVm45CFYD9UrzxBrrJDyY_8l2wQ-M0PSH-V4Ck8=fpZJLvbIv85XS8CRutjavpY_Fdf76G-DirfnL6Nz3y0=3ZKJZ0WF-e79ZpaLT2MELiCbN3xRqNMzMrLbQ4A0qXc=deCGm9koob82zKVR-6XPiavInSatUnIEwJaTtEpbsJs=7xoGyz4IJG2SimElIYA-0lvnIKvZBbkK2PydA1TzOb0=dJ0OrQKkVhZNg9DIDRtW1MA7OvaMr385D4Q8MxiPaLQ=");
-            for (int i=0; i<arr.size(); i++) {
-                System.out.println("shares["+i+"]: " + arr.get(i));
-            }
+//            for (int i=0; i<arr.size(); i++) {
+//                System.out.println("shares["+i+"]: " + arr.get(i));
+//            }
             
             System.out.println("\nsecret: " + s);
             System.out.println("secret.length: " + s.length());
@@ -204,9 +204,9 @@ public class MainApp {
             SSS sss = new SSS();
             List<String> arr = sss.create(3, 6, s, true);
             //System.out.println(arr);
-            for (int i=0; i<arr.size(); i++) {
-                System.out.println("shares["+i+"]: " + arr.get(i));
-            }
+//            for (int i=0; i<arr.size(); i++) {
+//                System.out.println("shares["+i+"]: " + arr.get(i));
+//            }
             
             System.out.println("\nsecret: " + s);
             System.out.println("secret.length: " + s.length());

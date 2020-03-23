@@ -27,6 +27,8 @@ import org.junit.Assert;
  * @author nghiatc
  * @since Mar 18, 2020
  * 
+ * cd ~/ntc/ntc-jcrypto
+ * 
  * # Run all the unit test classes.
  * mvn test
  * 
