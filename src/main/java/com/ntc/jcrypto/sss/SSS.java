@@ -21,8 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.*;
 import javax.xml.bind.DatatypeConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -30,23 +28,36 @@ import org.slf4j.LoggerFactory;
  * @since Jan 3, 2020
  */
 public class SSS {
-    private static final Logger log = LoggerFactory.getLogger(SSS.class);
-    
     // https://primes.utm.edu/lists/2small/200bit.html
     // PRIME = 2^n - k = 2^256 - 189
     private static final BigInteger PRIME = new BigInteger("115792089237316195423570985008687907853269984665640564039457584007913129639747");
     private Random rand = new SecureRandom();
     
-    // Returns a new array of secret shares (encoding x,y pairs as Base64 or Hex strings)
-    // created by Shamir's Secret Sharing Algorithm requiring a minimum number of
-    // share to recreate, of length shares, from the input secret raw as a string
-    public List<String> create(int minimum, int shares, String secret, boolean isBase64) {
+    /**
+     * Returns a new array of secret shares (encoding x,y pairs as Base64 or Hex strings)
+     * created by Shamir's Secret Sharing Algorithm requiring a minimum number of
+     * share to recreate, of length shares, from the input secret raw as a string
+     *
+     * @param minimum int minimum
+     * @param shares int shares
+     * @param secret String secret
+     * @param isBase64 True using encode Base64Url, otherwise encode Hex
+     * @return List string shares
+     * @throws Exception Input params invalid
+     */
+    public List<String> create(int minimum, int shares, String secret, boolean isBase64) throws Exception {
         List<String> rs = new ArrayList<>();
         // Verify minimum isn't greater than shares; there is no way to recreate
         // the original polynomial in our current setup, therefore it doesn't make
         // sense to generate fewer shares than are needed to reconstruct the secret.
+        if (minimum <= 0 || shares <= 0) {
+            throw new Exception("minimum or shares is invalid");
+        }
         if (minimum > shares) {
-            throw new ExceptionInInitializerError("cannot require more shares then existing");
+            throw new Exception("cannot require more shares then existing");
+        }
+        if (secret == null || secret.isEmpty()) {
+            throw new Exception("secret is NULL or empty");
         }
         
         // Convert the secret to its respective 256-bit BigInteger representation
@@ -84,35 +95,29 @@ public class SSS {
         // over which we are computing Shamir's Algorithm. The last dimension is
         // always two, as it is storing an x, y pair of points.
         // 
-        // points[shares][parts][2]
-        BigInteger[][][] points = new BigInteger[shares][secrets.size()][2];
-        
         // For every share...
         for (int i=0; i<shares; i++) {
             String s = "";
             // and every part of the secret...
             for (int j=0; j<secrets.size(); j++) {
                 // generate a new x-coordinate
-                BigInteger number = random();
-                while (inNumbers(numbers, number)) {
-                    number = random();
+                BigInteger x = random();
+                while (inNumbers(numbers, x)) {
+                    x = random();
                 }
-                numbers.add(number);
+                numbers.add(x);
                 
                 // and evaluate the polynomial at that point
-                points[i][j][0] = number;
-                points[i][j][1] = evaluatePolynomial(polynomial, j, number);
+                BigInteger y = evaluatePolynomial(polynomial, j, x);
                 
                 // encode to Base64 or Hex.
                 if (isBase64) {
-                    s += toBase64(points[i][j][0]);
-                    s += toBase64(points[i][j][1]);
+                    s += toBase64(x);
+                    s += toBase64(y);
                 } else {
-                    s += toHex(points[i][j][0]);
-                    s += toHex(points[i][j][1]);
+                    s += toHex(x);
+                    s += toHex(y);
                 }
-                //System.out.println("x[share-"+i+"][part-"+j+"]: " + points[i][j][0].toString(10));
-                //System.out.println("y[share-"+i+"][part-"+j+"]: " + points[i][j][1].toString(10));
             }
             rs.add(s);
         }
@@ -120,10 +125,17 @@ public class SSS {
         return rs;
     }
     
-    // Takes a string array of shares encoded in Base64 or Hex created via Shamir's Algorithm
-    // Note: the polynomial will converge if the specified minimum number of shares
-    //       or more are passed to this function. Passing thus does not affect it
-    //       Passing fewer however, simply means that the returned secret is wrong.
+    /**
+     * Takes a string array of shares encoded in Base64 or Hex created via Shamir's Algorithm
+     * Note: the polynomial will converge if the specified minimum number of shares
+     *       or more are passed to this function. Passing thus does not affect it
+     *       Passing fewer however, simply means that the returned secret is wrong.
+     *
+     * @param shares List string shares
+     * @param isBase64 True using decode Base64Url, otherwise decode Hex
+     * @return String secret
+     * @throws Exception Input params invalid
+     */
     public String combine(List<String> shares, boolean isBase64) throws Exception {
         String rs = "";
         if (shares == null || shares.isEmpty()) {
@@ -184,9 +196,15 @@ public class SSS {
         return rs;
     }
     
-    // Takes a string array of shares encoded in Base64 created via Shamir's
-    // Algorithm; each string must be of equal length of a multiple of 88 characters
-    // as a single 88 character share is a pair of 256-bit numbers (x, y).
+    /**
+     * Takes a string array of shares encoded in Base64 created via Shamir's
+     * Algorithm; each string must be of equal length of a multiple of 88 characters
+     * as a single 88 character share is a pair of 256-bit numbers (x, y).
+     *
+     * @param shares List string shares
+     * @return BigInteger[][][] Matrix points
+     * @throws Exception Input params invalid
+     */
     public BigInteger[][][] decodeShareBase64(List<String> shares) throws Exception {
         // Recreate the original object of x, y points, based upon number of shares
         // and size of each share (number of parts in the secret).
@@ -217,10 +235,16 @@ public class SSS {
         }
         return points;
     }
-    
-    // Takes a string array of shares encoded in Hex created via Shamir's
-    // Algorithm; each string must be of equal length of a multiple of 128 characters
-    // as a single 128 character share is a pair of 256-bit numbers (x, y).
+
+    /**
+     * Takes a string array of shares encoded in Hex created via Shamir's
+     * Algorithm; each string must be of equal length of a multiple of 128 characters
+     * as a single 128 character share is a pair of 256-bit numbers (x, y).
+     *
+     * @param shares List string shares 
+     * @return BigInteger[][][] Matrix points
+     * @throws Exception Input params invalid
+     */
     public BigInteger[][][] decodeShareHex(List<String> shares) throws Exception {
         // Recreate the original object of x, y points, based upon number of shares
         // and size of each share (number of parts in the secret).
@@ -252,11 +276,13 @@ public class SSS {
         return points;
     }
     
+    // Convert ByteArrays to String
     // https://www.baeldung.com/java-byte-arrays-hex-strings
     public String encodeHexString(byte[] bytes) {
         return DatatypeConverter.printHexBinary(bytes);
     }
 
+    // Convert String to ByteArrays
     // https://www.baeldung.com/java-byte-arrays-hex-strings
     public byte[] decodeHexString(String hexString) {
         return DatatypeConverter.parseHexBinary(hexString);

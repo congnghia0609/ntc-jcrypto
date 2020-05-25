@@ -20,7 +20,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.*;
-import org.junit.Assert;
 
 /**
  *
