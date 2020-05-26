@@ -6,7 +6,7 @@ ntc-jcrypto is module java cryptography
 <dependency>
     <groupId>com.streetcodevn</groupId>
     <artifactId>ntc-jcrypto</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
