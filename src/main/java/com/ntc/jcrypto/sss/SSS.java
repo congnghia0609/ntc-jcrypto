@@ -276,14 +276,12 @@ public class SSS {
         return points;
     }
     
-    // Convert ByteArrays to String
-    // https://www.baeldung.com/java-byte-arrays-hex-strings
+    // Convert ByteArrays to Hex String
     public String encodeHexString(byte[] bytes) {
         return DatatypeConverter.printHexBinary(bytes);
     }
 
-    // Convert String to ByteArrays
-    // https://www.baeldung.com/java-byte-arrays-hex-strings
+    // Convert Hex String to ByteArrays
     public byte[] decodeHexString(String hexString) {
         return DatatypeConverter.parseHexBinary(hexString);
     }
@@ -329,12 +327,11 @@ public class SSS {
         }
         byte[] byteData = decodeHexString(hexData);
         byteData = trimRight(byteData);
-        //System.out.println("byteData: " + Arrays.toString(byteData));
         rs = new String(byteData, StandardCharsets.UTF_8);
         return rs;
     }
     
-    // https://stackoverflow.com/questions/17003164/byte-array-with-padding-of-null-bytes-at-the-end-how-to-efficiently-copy-to-sma
+    // Remove right padding null bytes
     public byte[] trimRight(byte[] bytes) {
         int i = bytes.length - 1;
         while (i >= 0 && bytes[i] == 0) {
@@ -374,7 +371,6 @@ public class SSS {
         return accum;
     }
     
-    // https://www.baeldung.com/java-base64-encode-and-decode
     // Return Base64 string from BigInteger 256 bits long
     public String toBase64(BigInteger number) {
         String hexdata = number.toString(16);
