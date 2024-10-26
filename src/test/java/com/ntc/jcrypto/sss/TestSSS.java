@@ -166,4 +166,44 @@ public class TestSSS {
             e.printStackTrace();
         }
     }
+    
+    @Test
+    public void testFullHexWithSpecialCase() {
+        try {
+            String s = "бар"; // Cyrillic
+            List<String> arr = sss.create(3, 6, s, false);
+            Assert.assertEquals("FullHex size shares", 6, arr.size());
+            
+            String s1 = sss.combine(arr.subList(0, 3), false);
+            Assert.assertEquals("FullHex combine 1", s, s1);
+
+            String s2 = sss.combine(arr.subList(3, 6), false);
+            Assert.assertEquals("FullHex combine 2", s, s2);
+
+            String s3 = sss.combine(arr.subList(1, 5), false);
+            Assert.assertEquals("FullHex combine 3", s, s3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Test
+    public void testFullBase64WithSpecialCase() {
+        try {
+            String s = "бар"; // Cyrillic
+            List<String> arr = sss.create(3, 6, s, true);
+            Assert.assertEquals("FullBase64 size shares", 6, arr.size());
+
+            String s1 = sss.combine(arr.subList(0, 3), true);
+            Assert.assertEquals("FullBase64 combine 1", s, s1);
+
+            String s2 = sss.combine(arr.subList(3, 6), true);
+            Assert.assertEquals("FullBase64 combine 2", s, s2);
+
+            String s3 = sss.combine(arr.subList(1, 5), true);
+            Assert.assertEquals("FullBase64 combine 3", s, s3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
