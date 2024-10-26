@@ -6,7 +6,7 @@
     <version>2.0.0</version>
     <packaging>jar</packaging>
     <name>ntc-jcrypto</name>
-    <description>ntc-jcrypto is module java cryptography</description>
+    <description>ntc-jcrypto is a module java cryptography</description>
     <url>https://github.com/congnghia0609/ntc-jcrypto</url>
     
     <properties>
@@ -172,7 +172,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
+                <version>3.2.7</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
