@@ -3,10 +3,18 @@ ntc-jcrypto is module java cryptography
 
 ## Maven
 ```Xml
+<!-- Java 8 -->
 <dependency>
     <groupId>com.streetcodevn</groupId>
     <artifactId>ntc-jcrypto</artifactId>
     <version>1.0.2</version>
+</dependency>
+
+<!-- Java 11 -->
+<dependency>
+    <groupId>com.streetcodevn</groupId>
+    <artifactId>ntc-jcrypto</artifactId>
+    <version>2.0.0</version>
 </dependency>
 ```
 
