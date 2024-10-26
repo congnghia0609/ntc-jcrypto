@@ -1,5 +1,5 @@
 # ntc-jcrypto
-ntc-jcrypto is module java cryptography  
+ntc-jcrypto is a module java cryptography  
 
 ## Maven
 ```Xml
